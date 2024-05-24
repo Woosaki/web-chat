@@ -14,7 +14,6 @@ const Home = ({ username }) => {
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
-      console.log(lastJsonMessage);
       if (lastJsonMessage.type === "message") {
         setMessages((prevMessages) => [...prevMessages, lastJsonMessage.data]);
       } else if (lastJsonMessage.type === "online_users") {
@@ -22,6 +21,10 @@ const Home = ({ username }) => {
       }
     }
   }, [lastJsonMessage]);
+
+  useEffect(() => {
+    document.title = `Chat - ${username}`;
+  }, [username]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
