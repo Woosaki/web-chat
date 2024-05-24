@@ -9,10 +9,11 @@ const Login = ({ onSubmit }) => {
   }, []);
 
   return (
-    <div className="login-container">
+    <div id="login-container">
       <h1>Welcome to Web Chat</h1>
       <p>Enter your username</p>
       <form
+        id="login-form"
         onSubmit={(e) => {
           e.preventDefault();
           onSubmit(username);
