@@ -17,10 +17,13 @@ const Home = ({ username }) => {
       if (lastJsonMessage.type === "message") {
         setMessages((prevMessages) => [...prevMessages, lastJsonMessage.data]);
       } else if (lastJsonMessage.type === "online_users") {
-        setOnlineUsers(lastJsonMessage.users);
+        setOnlineUsers([
+          username,
+          ...lastJsonMessage.users.filter((user) => user !== username),
+        ]);
       }
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, username]);
 
   useEffect(() => {
     document.title = `Chat - ${username}`;
@@ -55,7 +58,9 @@ const Home = ({ username }) => {
       <h2>Online Users</h2>
       <ul>
         {onlineUsers.map((user, index) => (
-          <li key={index}>{user}</li>
+          <li style={{ color: index === 0 ? "blue" : "black" }} key={index}>
+            {user}
+          </li>
         ))}
       </ul>
     </div>
