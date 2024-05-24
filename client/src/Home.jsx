@@ -6,20 +6,22 @@ const Home = ({ username }) => {
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
-  const { sendMessage, lastMessage, readyState } = useWebSocket(WS_URL, {
+  const { sendMessage, lastJsonMessage, readyState } = useWebSocket(WS_URL, {
     queryParams: { username },
   });
 
   useEffect(() => {
-    if (lastMessage !== null) {
-      console.log(lastMessage);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: lastMessage.data, timestamp: new Date().toLocaleTimeString() },
-      ]);
+    if (lastJsonMessage !== null) {
+      console.log(lastJsonMessage);
+      if (lastJsonMessage.type === "message") {
+        setMessages((prevMessages) => [...prevMessages, lastJsonMessage.data]);
+      } else if (lastJsonMessage.type === "online_users") {
+        setOnlineUsers(lastJsonMessage.users);
+      }
     }
-  }, [lastMessage]);
+  }, [lastJsonMessage]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -34,9 +36,7 @@ const Home = ({ username }) => {
       <h1>Hello {username}</h1>
       <ul>
         {messages.map((message, index) => (
-          <li key={index}>
-            [{message.timestamp}] {message.text}
-          </li>
+          <li key={index}>{message}</li>
         ))}
       </ul>
       <form onSubmit={handleSendMessage}>
@@ -49,6 +49,12 @@ const Home = ({ username }) => {
           Send
         </button>
       </form>
+      <h2>Online Users</h2>
+      <ul>
+        {onlineUsers.map((user, index) => (
+          <li key={index}>{user}</li>
+        ))}
+      </ul>
     </div>
   );
 };

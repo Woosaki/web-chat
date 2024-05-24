@@ -15,19 +15,39 @@ wsServer.on("connection", (ws, request) => {
   console.log(`User ${username} connected`);
   console.log(uuid);
 
-  clients[uuid] = ws;
+  clients[uuid] = { ws, username };
 
   ws.on("message", (message) => {
-    for (let client in clients) {
-      clients[client].send(`${username}: ${message}`);
-    }
+    broadcastMessage(username, message);
   });
 
   ws.on("close", () => {
     console.log(`User ${username} disconnected`);
     delete clients[uuid];
+    broadcastOnlineUsers();
   });
+
+  broadcastOnlineUsers();
 });
+
+function broadcastMessage(username, message) {
+  const data = {
+    type: "message",
+    data: `[${new Date().toLocaleTimeString()}] ${username}: ${message}`,
+  };
+  for (let client in clients) {
+    clients[client].ws.send(JSON.stringify(data));
+  }
+}
+
+function broadcastOnlineUsers() {
+  const onlineUsers = Object.values(clients).map((client) => client.username);
+  for (let client in clients) {
+    clients[client].ws.send(
+      JSON.stringify({ type: "online_users", users: onlineUsers })
+    );
+  }
+}
 
 server.listen(port, () => {
   console.log(`Websocket server is running on port ${port}`);
