@@ -39,9 +39,22 @@ const Home = ({ username }) => {
 
   return (
     <div>
-      <h2>Welcome to Web Chat</h2>
       <div id="home-container">
+        <section id="online-users-section">
+          <h2>Online Users</h2>
+          <ul id="online-users">
+            {onlineUsers.map((user, index) => (
+              <li
+                style={{ color: index === 0 ? "#0784b5" : "#eee" }}
+                key={index}
+              >
+                {user}
+              </li>
+            ))}
+          </ul>
+        </section>
         <section id="messages-section">
+          <h2>Welcome to Web Chat</h2>
           <ul id="messages-list">
             {messages.map((message, index) => (
               <li key={index}>{message}</li>
@@ -54,19 +67,9 @@ const Home = ({ username }) => {
               onChange={(e) => setNewMessage(e.target.value)}
             />
             <button type="submit" disabled={readyState !== WebSocket.OPEN}>
-              Send
+              &uarr;
             </button>
           </form>
-        </section>
-        <section id="online-users-section">
-          <h2>Online Users</h2>
-          <ul>
-            {onlineUsers.map((user, index) => (
-              <li style={{ color: index === 0 ? "blue" : "black" }} key={index}>
-                {user}
-              </li>
-            ))}
-          </ul>
         </section>
       </div>
     </div>
