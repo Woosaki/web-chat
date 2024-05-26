@@ -18,7 +18,7 @@ wsServer.on("connection", (ws, request) => {
   clients[uuid] = { ws, username };
 
   ws.on("message", (message) => {
-    broadcastMessage(username, message);
+    broadcastMessage(username, message.toString());
   });
 
   ws.on("close", () => {
@@ -33,7 +33,11 @@ wsServer.on("connection", (ws, request) => {
 function broadcastMessage(username, message) {
   const data = {
     type: "message",
-    data: `[${new Date().toLocaleTimeString()}] ${username}: ${message}`,
+    data: {
+      timestamp: new Date().toLocaleTimeString(),
+      username: username,
+      message: message,
+    },
   };
   for (let client in clients) {
     clients[client].ws.send(JSON.stringify(data));

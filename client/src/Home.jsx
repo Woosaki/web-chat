@@ -57,7 +57,13 @@ const Home = ({ username }) => {
           <h2>Welcome to Web Chat</h2>
           <ul id="messages-list">
             {messages.map((message, index) => (
-              <li key={index}>{message}</li>
+              <li key={index}>
+                <div className="message-header">
+                  <span className="username">{message.username}</span>
+                  <span className="timestamp">{message.timestamp}</span>
+                </div>
+                <div className="message-content">{message.message}</div>
+              </li>
             ))}
           </ul>
           <form id="message-form" onSubmit={handleSendMessage}>
