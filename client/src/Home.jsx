@@ -57,7 +57,12 @@ const Home = ({ username }) => {
           <h2>Welcome to Web Chat</h2>
           <ul id="messages-list">
             {messages.map((message, index) => (
-              <li key={index}>
+              <li
+                key={index}
+                className={`${
+                  message.username === username ? "my-message" : ""
+                }`}
+              >
                 <div className="message-header">
                   <span className="username">{message.username}</span>
                   <span className="timestamp">{message.timestamp}</span>

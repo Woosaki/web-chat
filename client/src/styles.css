@@ -114,15 +114,37 @@ button:hover {
 #messages-list {
   flex-grow: 1;
   overflow-y: auto;
-  margin: 1rem 5rem;
-  padding: 0;
+  padding: 1rem 5rem;
   list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #eee;
+}
+
+#messages-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+#messages-list::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+#messages-list::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#messages-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 #messages-list li {
   width: fit-content;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.6rem;
   color: #eee;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .username {
@@ -142,6 +164,14 @@ button:hover {
   padding: 0.8rem 1.5rem;
   margin-top: 0.3rem;
   text-align: center;
+}
+
+.my-message {
+  margin-left: auto;
+}
+
+.my-message .message-content {
+  background-color: #0784b5;
 }
 
 #message-form {
