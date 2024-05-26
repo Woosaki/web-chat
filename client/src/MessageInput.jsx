@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const MessageInput = ({ sendMessage, readyState }) => {
   const [message, setMessage] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,6 +22,8 @@ const MessageInput = ({ sendMessage, readyState }) => {
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        placeholder="Enter your message..."
+        ref={inputRef}
       />
       <button type="submit" disabled={readyState !== WebSocket.OPEN}>
         &uarr;
